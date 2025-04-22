@@ -32,6 +32,7 @@ func (p *PremiumPlanDecorator) TransferFee() float64 {
 
 type EnterprisePlanDecorator struct {
 	PlanDecorator
+	amount float64
 }
 
 func (e *EnterprisePlanDecorator) ProcessingFee() float64 {
@@ -39,7 +40,7 @@ func (e *EnterprisePlanDecorator) ProcessingFee() float64 {
 }
 
 func (e *EnterprisePlanDecorator) TransferFee() float64 {
-	return e.feeProvider.TransferFee() * 0.75
+	return e.amount * 0.75
 }
 
 func CreateFeeProvider(amount float64, plan PlanType) pkg.FeeProvider {
@@ -55,7 +56,10 @@ func CreateFeeProvider(amount float64, plan PlanType) pkg.FeeProvider {
 		}
 	case EnterprisePlan:
 		return &EnterprisePlanDecorator{
-			PlanDecorator: PlanDecorator{feeProvider: transfer},
+			PlanDecorator: PlanDecorator{
+				feeProvider: transfer,
+			},
+			amount: amount,
 		}
 	default: // Basic plan uses default implementation
 		return transfer
