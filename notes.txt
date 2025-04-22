@@ -1,0 +1,7 @@
+decorator pattern
+adapter pattern
+builder pattern
+
+options
+unit of work
+consistent hashing
